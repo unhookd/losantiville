@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+$executing_as = File.basename($0)
+$losantiville_dir = File.dirname(File.dirname(File.realpath(__FILE__)))
+
+lib = File.join($losantiville_dir, "lib")
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+require 'losantiville'
+
+specification_io = File.open(ARGV[0])
+losantiville_renderer = Losantiville::Renderer.new(specification_io)
+
+File.write(ARGV[1], %Q{<!DOCTYPE html><html lang="en"><body>#{losantiville_renderer.render}</body></html>})
