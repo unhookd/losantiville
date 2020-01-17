@@ -17,6 +17,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "markaby", "~> 0.9"
-  spec.add_dependency "yajl-ruby", "~> 1.4"
+  spec.add_dependency "yajl-ruby", "~> 1.3"
   spec.add_dependency "commonmarker", "~> 0.16"
 end
