@@ -199,8 +199,12 @@ module Losantiville
         return describe_schema(nil, @definitions[(ref || db).split("/").last])
       end
 
-      unless type = db["type"]
-        raise "invalid schema #{db}"
+      if db.is_a?(Hash)
+        unless type = db["type"]
+          raise "invalid schema #{db.class} #{db.inspect}"
+        end
+      else
+        type = db
       end
 
       lower_parts = case type
@@ -225,10 +229,10 @@ module Losantiville
             "#{db["format"]} number"
           end
 
-        when "integer"
-          unless format = db["format"]
-            raise "invalid integer"
-          end
+        when "integer", "int32"
+          #unless format = db["format"]
+          #  raise "invalid integer"
+          #end
 
           0 #TODO: example id links
 
@@ -263,7 +267,8 @@ module Losantiville
 
           r
       else
-        raise "unknown schema #{db}"
+        #raise "unknown schema #{db.class} #{db.inspect}"
+        ""
       end
 
       lower_parts
