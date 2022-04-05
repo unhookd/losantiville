@@ -56,7 +56,7 @@ GEM
       sinatra (= 2.0.8.1)
       tilt (~> 2.0)
     tilt (2.0.10)
-    yajl-ruby (1.4.1)
+    yajl-ruby (1.4.2)
 
 PLATFORMS
   ruby
