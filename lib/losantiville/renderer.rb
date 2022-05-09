@@ -76,7 +76,7 @@ module Losantiville
           <h3 class="tag" id="tag-#{rk_tag.gsub(" ", "-")}">
             <a href="#tag-#{rk_tag.gsub(" ", "-")}">#{rk_tag}</a>
           </h3>
-          <p>#{CommonMarker.render_html(@tags_by_name[rk_tag])}</p>
+          <p>#{@tags_by_name[rk_tag] ? CommonMarker.render_html(@tags_by_name[rk_tag]) : 'no-tag'}</p>
         }
 
         raw_definition_related_requests += %q{<div><ul>}
