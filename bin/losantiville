@@ -8,7 +8,8 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'losantiville'
 
-specification_io = File.open(ARGV[0])
+specification_io = ARGV[0] ? File.open(ARGV[0]) : $stdin
+
 losantiville_renderer = Losantiville::Renderer.new(specification_io)
 
-File.write(ARGV[1], %Q{<!DOCTYPE html><html lang="en"><body>#{losantiville_renderer.render || 'error'}</body></html>})
+(ARGV[1] ? File.open(ARGV[1]) : $stdout).write(losantiville_renderer.render)

@@ -18,5 +18,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "markaby", "~> 0.9"
   spec.add_dependency "yajl-ruby", "~> 1.3"
-  spec.add_dependency "commonmarker", "~> 0.16"
+  spec.add_dependency "commonmarker", "~> 0.23"
 end

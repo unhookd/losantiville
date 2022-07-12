@@ -45,23 +45,28 @@ module Losantiville
       @tags = []
       @tags_by_group = []
       @tags_by_name = {}
+      @tags_by_name["default"] = "default listings"
 
       parse_specification!
     end
 
     def render
-      description = CommonMarker.render_doc(@description, :DEFAULT)
+      if @description
+        description = CommonMarker.render_doc(@description, :DEFAULT)
 
-      description.walk do |node|
-        case node.type
-          when :header
-            case node.header_level
-              when 2
-                section = node.to_plaintext
-                @sections[section] = URI::Generic.build(:fragment => "section/#{section.gsub(" ", "-").strip}")
+        description.walk do |node|
+          case node.type
+            when :header
+              case node.header_level
+                when 2
+                  section = node.to_plaintext
+                  @sections[section] = URI::Generic.build(:fragment => "section/#{section.gsub(" ", "-").strip}")
 
-            end
+              end
+          end
         end
+      else
+        description = nil
       end
 
       section_nav = %q{<ul class="sections">}
@@ -118,7 +123,7 @@ module Losantiville
 
       raw_sections = ""
 
-      @tags_by_groups.each { |group_item|
+      @tags_by_groups && @tags_by_groups.each { |group_item|
         group = group_item["name"]
         tags = group_item["tags"]
 
@@ -183,7 +188,7 @@ module Losantiville
             <div id="documentation">
               <a id="top"/>
               <div>
-                #{MyMarkdownRenderer.new.render(description)}
+                #{description ? MyMarkdownRenderer.new.render(description) : "TODO"}
                 #{raw_definition_related_requests}
               </div>
             </div>
@@ -191,7 +196,7 @@ module Losantiville
         </div>
       }
 
-      raw_body
+      "<!DOCTYPE html><html lang=\"en\"><body>#{raw_body}</body></html>"
     end
 
     def describe_schema(key, db)
@@ -201,7 +206,7 @@ module Losantiville
 
       if db.is_a?(Hash)
         unless type = db["type"]
-          raise "invalid schema #{db.class} #{db.inspect}"
+          raise "invalid schema #{[db.class, db].inspect}"
         end
       else
         type = db
@@ -290,7 +295,6 @@ module Losantiville
           when "consumes"
           when "produces"
           when "info"
-            #["info", ["version", "title", "description", "termsOfService", "contact", "license"]]
             @title = secondary_bits["title"]
             @description = secondary_bits["description"]
 
@@ -299,17 +303,22 @@ module Losantiville
 
           when "paths"
             secondary_bits.each { |path, methods|
-              methods.each { |method, request|
-                request["tags"].each { |tag|
-                  @requests_by_tag[tag] ||= []
-                  @requests_by_tag[tag] << [method, request, path]
-                }
+              methods && methods.each { |method, request|
+                if request["tags"]
+                  request["tags"].each { |tag|
+                    @requests_by_tag[tag] ||= []
+                    @requests_by_tag[tag] << [method, request, path]
+                  }
+                else
+                  @requests_by_tag["default"] ||= []
+                  @requests_by_tag["default"] << [method, request, path]
+                end
               }
             }
 
           when "tags"
             @tags = secondary_bits 
-            @tags.each { |t|
+            @tags && @tags.each { |t|
               @tags_by_name[t["name"]] = t["description"]
             }
 
