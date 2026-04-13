@@ -1,0 +1,123 @@
+openapi: "3.0.3"
+info:
+  title: Simple API overview
+  version: v3
+  description: |-
+    An example API for testing OpenAPI 3.0 support.
+servers:
+  - url: https://api.example.com/v3
+    description: Production server
+  - url: https://staging.example.com/v3
+    description: Staging server
+tags:
+  - name: versions
+    description: API version management
+paths:
+  /:
+    get:
+      operationId: listVersionsv3
+      summary: List API versions
+      tags:
+        - versions
+      responses:
+        "200":
+          description: |-
+            200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionList'
+  /v3:
+    get:
+      operationId: getVersionDetailsv3
+      summary: Show API version details
+      tags:
+        - versions
+      deprecated: true
+      parameters:
+        - name: verbose
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: |-
+            200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionDetail'
+        "404":
+          description: Not found
+    post:
+      operationId: createVersionv3
+      summary: Create a new version
+      tags:
+        - versions
+      requestBody:
+        description: Version to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionInput'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionDetail'
+components:
+  schemas:
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+        rel:
+          type: string
+    Version:
+      type: object
+      properties:
+        status:
+          type: string
+        updated:
+          type: string
+          format: date-time
+        id:
+          type: string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    VersionList:
+      type: object
+      properties:
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Version'
+    VersionDetail:
+      type: object
+      properties:
+        version:
+          $ref: '#/components/schemas/Version'
+    VersionInput:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: JWT Bearer token
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key passed in header

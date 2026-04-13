@@ -1,6 +1,6 @@
 # losantiville
 
-Turbo Fast Server Side Rendered OpenAPI Specification Documentation Site Generator for Swagger 2.0
+Turbo Fast Server Side Rendered OpenAPI Specification Documentation Site Generator for OpenAPI 2.0 (Swagger) / 3.0 / 3.1
 
 ## example generation
 
