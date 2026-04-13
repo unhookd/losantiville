@@ -254,9 +254,9 @@ module Losantiville
         if type.is_a?(Array)
           type = type.reject { |t| t == "null" }.first || type.first
         end
-        unless type
-          raise "invalid schema #{[db.class, db].inspect}"
-        end
+        #unless type
+        #  raise "invalid schema #{[db.class, db].inspect}"
+        #end
       else
         type = db
       end
@@ -299,9 +299,9 @@ module Losantiville
           properties = db.is_a?(Hash) ? db["properties"] : nil
           additional_properties = db.is_a?(Hash) ? db["additionalProperties"] : nil
 
-          unless properties || additional_properties
-            raise "invalid object #{db}"
-          end
+          #unless properties || additional_properties
+          #  raise "invalid object #{db}"
+          #end
 
           r = {}
 

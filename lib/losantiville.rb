@@ -3,6 +3,7 @@
 #NOTE: stdlib
 require 'date'
 require 'psych'
+require 'uri'
 
 #NOTE: gems
 require 'markaby'

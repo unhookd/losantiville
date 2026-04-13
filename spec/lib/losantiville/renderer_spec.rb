@@ -133,6 +133,40 @@ describe Losantiville::Renderer do
     end
   end
 
+  context "with minimal OpenAPI 3.1 spec missing non-required sections" do
+    let(:renderer) do
+      Losantiville::Renderer.new(File.open(
+        File.expand_path("../../../fixtures/openapi31_minimal.yaml", __FILE__)
+      ))
+    end
+
+    it "renders HTML without errors" do
+      html = renderer.render
+      expect(html).to start_with("<!DOCTYPE html>")
+      expect(html).to include("Minimal API")
+    end
+
+    it "renders operations from spec without tags" do
+      html = renderer.render
+      expect(html).to include("List items")
+      expect(html).to include("Create an item")
+      expect(html).to include("Empty endpoint")
+    end
+
+    it "renders responses without schema content" do
+      html = renderer.render
+      expect(html).to include("200")
+      expect(html).to include("201")
+      expect(html).to include("204")
+    end
+
+    it "renders object schema without properties" do
+      html = renderer.render
+      # The request body has type: object with no properties - should not error
+      expect(html).to include("Request Body")
+    end
+  end
+
   context "describe_schema" do
     let(:renderer) do
       Losantiville::Renderer.new(File.open(
@@ -191,6 +225,26 @@ describe Losantiville::Renderer do
       expect(renderer.describe_schema(nil, { "type" => "string" })).to eq("string")
       expect(renderer.describe_schema(nil, { "type" => "integer" })).to eq(0)
       expect(renderer.describe_schema(nil, { "type" => "number", "format" => "float" })).to eq(0.0)
+    end
+
+    it "handles schema hash without type gracefully" do
+      schema = { "description" => "A free-form value" }
+      result = renderer.describe_schema(nil, schema)
+      expect(result).to eq("")
+    end
+
+    it "handles object without properties or additionalProperties gracefully" do
+      schema = { "type" => "object" }
+      result = renderer.describe_schema(nil, schema)
+      expect(result).to be_a(Hash)
+      expect(result).to be_empty
+    end
+
+    it "handles object with only description and no properties" do
+      schema = { "type" => "object", "description" => "An empty object" }
+      result = renderer.describe_schema(nil, schema)
+      expect(result).to be_a(Hash)
+      expect(result).to be_empty
     end
   end
 end
