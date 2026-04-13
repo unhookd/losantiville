@@ -1,0 +1,189 @@
+openapi: "3.1.0"
+info:
+  title: Simple API overview
+  version: v3.1
+  description: |-
+    An example API for testing OpenAPI 3.1 support including webhooks.
+servers:
+  - url: https://api.example.com/v3
+    description: Production server
+tags:
+  - name: versions
+    description: API version management
+  - name: pets
+    description: Pet operations
+paths:
+  /:
+    get:
+      operationId: listVersionsv31
+      summary: List API versions
+      tags:
+        - versions
+      responses:
+        "200":
+          description: |-
+            200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionList'
+  /pets:
+    get:
+      operationId: listPets
+      summary: List all pets
+      tags:
+        - pets
+      responses:
+        "200":
+          description: A list of pets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+    post:
+      operationId: createPet
+      summary: Create a pet
+      tags:
+        - pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetInput'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+  /pets/{petId}:
+    get:
+      operationId: getPet
+      summary: Get a pet by ID
+      tags:
+        - pets
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A pet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        "404":
+          description: Not found
+webhooks:
+  petAdopted:
+    post:
+      operationId: petAdoptedWebhook
+      summary: Pet adopted notification
+      tags:
+        - pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetEvent'
+      responses:
+        "200":
+          description: Webhook acknowledged
+  newPetAvailable:
+    post:
+      operationId: newPetAvailableWebhook
+      summary: New pet available notification
+      tags:
+        - pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetEvent'
+      responses:
+        "200":
+          description: Webhook acknowledged
+components:
+  schemas:
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+        rel:
+          type: string
+    Version:
+      type: object
+      properties:
+        status:
+          type: string
+        updated:
+          type: string
+          format: date-time
+        id:
+          type: string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    VersionList:
+      type: object
+      properties:
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Version'
+    Pet:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        tag:
+          type:
+            - string
+            - "null"
+    PetInput:
+      type: object
+      properties:
+        name:
+          type: string
+        tag:
+          type: string
+    PetEvent:
+      type: object
+      properties:
+        event:
+          type: string
+        pet:
+          $ref: '#/components/schemas/Pet'
+    ComposedModel:
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            extra_field:
+              type: boolean
+    OneOfModel:
+      oneOf:
+        - $ref: '#/components/schemas/Pet'
+        - $ref: '#/components/schemas/Version'
+    AnyOfModel:
+      anyOf:
+        - $ref: '#/components/schemas/Pet'
+        - $ref: '#/components/schemas/Version'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: JWT Bearer token
