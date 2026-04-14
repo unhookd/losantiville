@@ -193,7 +193,7 @@ module Losantiville
         <div class="api-wrapper" role="document">
           <header class="api-header" role="banner">
             <h1 class="api-title"><a href="#top">#{@title}</a></h1>
-            <button class="theme-toggle" role="switch" aria-checked="false" aria-label="Toggle dark theme" onclick="(function(btn){var link=document.getElementById('theme-stylesheet');var isDark=link.getAttribute('href')==='dark-theme.css';link.setAttribute('href',isDark?'light-theme.css':'dark-theme.css');btn.setAttribute('aria-checked',String(!isDark));btn.textContent=isDark?'\\u263E Dark':'\\u2600 Light';})(this)">&#x263E; Dark</button>
+            <button class="theme-toggle" role="switch" aria-checked="false" aria-label="Switch to dark theme" onclick="(function(btn){var link=document.getElementById('theme-stylesheet');var isDark=link.getAttribute('href')==='dark-theme.css';link.setAttribute('href',isDark?'light-theme.css':'dark-theme.css');btn.setAttribute('aria-checked',String(!isDark));btn.setAttribute('aria-label',isDark?'Switch to dark theme':'Switch to light theme');btn.textContent=isDark?'\\u263E Dark':'\\u2600 Light';})(this)">&#x263E; Dark</button>
           </header>
           <div class="api-main-content">
             <nav class="api-navigation" role="navigation" aria-label="API navigation">

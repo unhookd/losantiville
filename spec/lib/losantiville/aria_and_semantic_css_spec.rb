@@ -49,7 +49,7 @@ describe "ARIA attributes and semantic CSS classNames" do
     end
 
     it "has theme toggle with aria-label" do
-      expect(html).to match(/<button[^>]*aria-label="Toggle dark theme"/)
+      expect(html).to match(/<button[^>]*aria-label="Switch to dark theme"/)
     end
 
     it "has theme toggle with inline onclick handler" do
