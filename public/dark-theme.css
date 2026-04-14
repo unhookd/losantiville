@@ -1,6 +1,7 @@
 /*
  * Losantiville Dark Theme
  * Modern corporate dark color palette for API documentation
+ * Light text on dark backgrounds for readability
  */
 
 /* ============================================
@@ -47,10 +48,6 @@
   --color-text-secondary: #94a3b8;
   --color-text-muted: #64748b;
 
-  /* Border colors */
-  --color-border: #334155;
-  --color-border-light: #1e293b;
-
   /* Typography */
   --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
@@ -61,11 +58,6 @@
   --space-md: 1rem;
   --space-lg: 1.5rem;
   --space-xl: 2rem;
-
-  /* Border radius */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
 }
 
 /* ============================================
@@ -97,7 +89,6 @@ a:hover {
 a:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
 }
 
 /* ============================================
@@ -125,8 +116,10 @@ html, body, #outside-container, #dashboard-container,
    ============================================ */
 .api-header {
   background: var(--color-gray-100);
-  border-bottom: 3px solid var(--color-primary-dark);
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .api-header .api-title {
@@ -145,6 +138,18 @@ html, body, #outside-container, #dashboard-container,
 }
 
 /* ============================================
+   Theme Toggle
+   ============================================ */
+.theme-toggle {
+  cursor: pointer;
+  padding: 0.25em 0.75em;
+  font-size: 0.8em;
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  margin-right: var(--space-sm);
+}
+
+/* ============================================
    Navigation Sidebar
    ============================================ */
 .api-navigation {
@@ -154,7 +159,6 @@ html, body, #outside-container, #dashboard-container,
   min-width: 240px;
   max-width: 360px;
   background: var(--color-surface-alt);
-  border-right: 1px solid var(--color-border);
 }
 
 .api-navigation .nav-content {
@@ -185,7 +189,6 @@ html, body, #outside-container, #dashboard-container,
   color: var(--color-text-secondary);
   display: block;
   padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-sm);
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
@@ -210,7 +213,6 @@ html, body, #outside-container, #dashboard-container,
   color: var(--color-text-muted);
   margin: var(--space-lg) 0 var(--space-sm) 0;
   padding-bottom: var(--space-xs);
-  border-bottom: 1px solid var(--color-border);
 }
 
 .tag-heading {
@@ -224,7 +226,6 @@ html, body, #outside-container, #dashboard-container,
   display: block;
   font-size: 0.8rem;
   padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-sm);
   color: var(--color-text-secondary);
   transition: background-color 0.15s ease;
 }
@@ -244,16 +245,15 @@ html, body, #outside-container, #dashboard-container,
   font-weight: 600;
   text-transform: uppercase;
   margin-left: var(--space-sm);
-  border-radius: var(--radius-sm);
   padding: 0.1em 0.4em;
   vertical-align: middle;
 }
 
-.nav-operation-link.get::after { content: "get"; color: var(--color-http-get); border: 1px solid var(--color-http-get); }
-.nav-operation-link.post::after { content: "post"; color: var(--color-http-post); border: 1px solid var(--color-http-post); }
-.nav-operation-link.put::after { content: "put"; color: var(--color-http-put); border: 1px solid var(--color-http-put); }
-.nav-operation-link.patch::after { content: "patch"; color: var(--color-http-patch); border: 1px solid var(--color-http-patch); }
-.nav-operation-link.delete::after { content: "delete"; color: var(--color-http-delete); border: 1px solid var(--color-http-delete); }
+.nav-operation-link.get::after { content: "get"; color: var(--color-http-get); }
+.nav-operation-link.post::after { content: "post"; color: var(--color-http-post); }
+.nav-operation-link.put::after { content: "put"; color: var(--color-http-put); }
+.nav-operation-link.patch::after { content: "patch"; color: var(--color-http-patch); }
+.nav-operation-link.delete::after { content: "delete"; color: var(--color-http-delete); }
 
 /* ============================================
    Main Documentation Area
@@ -269,7 +269,6 @@ html, body, #outside-container, #dashboard-container,
 .api-documentation h2 {
   padding-top: var(--space-md);
   color: var(--color-text-primary);
-  border-bottom: 1px solid var(--color-border);
   padding-bottom: var(--space-sm);
 }
 
@@ -280,9 +279,8 @@ code, tt {
   font-family: var(--font-mono);
   font-size: 0.85em;
   background-color: var(--color-surface-alt);
-  border: 1px solid var(--color-border);
   padding: 0.2em 0.4em;
-  color: var(--color-gray-700);
+  color: var(--color-gray-800);
 }
 
 pre,
@@ -290,8 +288,6 @@ pre,
   font-family: var(--font-mono);
   font-size: 0.8rem;
   background-color: var(--color-gray-100);
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-primary);
   padding: var(--space-md) var(--space-lg);
   width: 80%;
   overflow-x: auto;
@@ -303,7 +299,6 @@ pre,
 }
 
 .schema-error {
-  border-color: var(--color-danger);
   color: var(--color-danger);
 }
 
@@ -314,7 +309,6 @@ pre,
   padding-top: var(--space-lg);
   font-size: 1.1rem;
   color: var(--color-text-primary);
-  border-bottom: 2px solid var(--color-primary);
   padding-bottom: var(--space-xs);
 }
 
@@ -331,8 +325,6 @@ pre,
 .operation-item {
   margin-bottom: var(--space-lg);
   padding: var(--space-md);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
   background: var(--color-surface-alt);
   transition: box-shadow 0.15s ease;
 }
@@ -365,7 +357,6 @@ pre,
   font-size: 0.75rem;
   text-transform: uppercase;
   padding: 0.2em 0.5em;
-  border-radius: var(--radius-sm);
   color: var(--color-gray-100);
 }
 
@@ -377,7 +368,6 @@ pre,
 
 .endpoint-url {
   background: none;
-  border: none;
   font-size: 0.85rem;
   color: var(--color-text-primary);
   font-weight: 500;
@@ -409,7 +399,6 @@ pre,
   font-family: var(--font-mono);
   background-color: var(--color-surface-elevated);
   color: var(--color-text-primary);
-  border-radius: var(--radius-sm);
   transition: background-color 0.15s ease;
 }
 
@@ -425,8 +414,6 @@ pre,
   margin: 0 0 var(--space-lg) 0;
   padding: var(--space-md);
   background: var(--color-surface-alt);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
 }
 
 .servers-heading {
@@ -449,7 +436,6 @@ pre,
 
 .server-url {
   background: none;
-  border: none;
   color: var(--color-primary);
   font-weight: 500;
 }
@@ -461,8 +447,6 @@ pre,
   margin: var(--space-sm) 0;
   padding: var(--space-md);
   background: var(--color-surface-alt);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
 }
 
 .request-body-heading {
@@ -501,8 +485,6 @@ pre,
   font-weight: 600;
   text-transform: uppercase;
   margin-left: var(--space-sm);
-  border: 1px solid var(--color-http-patch);
-  border-radius: var(--radius-sm);
   padding: 0.1em 0.4em;
   color: var(--color-http-patch);
   vertical-align: middle;
@@ -516,9 +498,6 @@ pre,
 .webhook-item {
   margin-bottom: var(--space-lg);
   padding: var(--space-md);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  border-left: 3px solid var(--color-http-patch);
   background: var(--color-surface-alt);
 }
 
@@ -529,8 +508,6 @@ pre,
   margin: var(--space-lg) 0;
   padding: var(--space-md);
   background: var(--color-surface-alt);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
 }
 
 .security-schemes-heading {
@@ -588,8 +565,6 @@ pre,
   align-items: center;
   padding: var(--space-xl);
   background: var(--color-surface-alt);
-  border: 2px dashed var(--color-border);
-  border-radius: var(--radius-lg);
 }
 
 .file-input {
@@ -604,8 +579,6 @@ pre,
   padding: var(--space-sm) var(--space-md);
   background-color: var(--color-primary-dark);
   color: #ffffff;
-  border: none;
-  border-radius: var(--radius-md);
   cursor: pointer;
   font-weight: 500;
   transition: background-color 0.15s ease;

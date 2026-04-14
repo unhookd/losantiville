@@ -155,41 +155,6 @@ module Losantiville
       }
 
       raw_body = %Q{
-        <style>
-          html { font-family: sans-serif; font-size: smaller; }
-          html, body, #outside-container, #dashboard-container, .api-wrapper { height: 100%; margin: 0; padding: 0; flex: 1; display: flex; flex-flow: column; overflow: hidden; }
-          .api-main-content { display: flex; flex: 1; overflow: hidden; }
-          .api-header { background: #e0e0e0; display: flex; align-items: center; justify-content: space-between; }
-          .api-header h1 { margin: 0.15em }
-          .theme-toggle { cursor: pointer; border: 1px solid #999; border-radius: 3px; padding: 0.25em 0.75em; font-size: 0.8em; background: #fff; margin-right: 0.5em; }
-          .api-navigation { overflow: auto; height: 100%; width: 30%; }
-          .api-navigation > div { padding: 0.5em; }
-          .api-navigation ul { list-style: none; padding: 0; }
-          .api-navigation ul.groups { margin: 0 0 1em 0.5em; }
-          .api-navigation ul.groups li { margin: 0 0 0.5em; }
-          .api-navigation ul.sections { margin: -1em 0 1em 0em; }
-          .api-documentation { overflow: auto; height: 100%; width: 70%; padding: 0 1em 1em 1em; }
-          .api-documentation h2 { padding: 0.5em 0 0 0; }
-          code, tt { font-family: monospace; background-color: #c0c0c0; padding: 0.2em 0.33em 0.2em 0.33em; }
-          pre { font-family: monospace; background-color: #c0c0c0; padding: 0.5em; width: 80%; overflow-x: auto; }
-          .response-tabs .response-panel:not(:target) { display: none; }
-          .response-tabs .response-panel:target { padding-top: 4.5em; margin-top: -4.5em; display: block; }
-          .response-code { margin-right: 0.5em; padding: 0.25em; background-color: yellow; }
-          .tag { padding-top: 1em; }
-          .summary { padding-top: 1em; }
-          .deprecated a { text-decoration: line-through; }
-          .get::after { content: "get"; font-size: 0.7em; margin: 0em 0.7em 0 0.7em; border: 1px solid green; border-radius: 3px; padding: 0em 0.33em 0 0.33em; }
-          .post::after { content: "post"; font-size: 0.7em; margin: 0em 0.7em 0 0.7em; border: 1px solid yellow; border-radius: 3px; padding: 0em 0.33em 0 0.33em; }
-          .delete::after { content: "delete"; font-size: 0.7em; margin: 0em 0.7em 0 0.7em; border: 1px solid red; border-radius: 3px; padding: 0em 0.33em 0 0.33em; }
-          .put::after { content: "put"; font-size: 0.7em; margin: 0em 0.7em 0 0.7em; border: 1px solid orange; border-radius: 3px; padding: 0em 0.33em 0 0.33em; }
-          .patch::after { content: "patch"; font-size: 0.7em; margin: 0em 0.7em 0 0.7em; border: 1px solid purple; border-radius: 3px; padding: 0em 0.33em 0 0.33em; }
-          .servers { margin: 0 0 1em 0; padding: 0.5em; background: #f0f0f0; }
-          .servers tt { background: none; }
-          .request-body { margin: 0.5em 0; padding: 0.5em; background: #f8f8f0; }
-          .webhook-badge { font-size: 0.7em; margin: 0em 0.7em 0 0.7em; border: 1px solid #9b59b6; border-radius: 3px; padding: 0em 0.33em 0 0.33em; color: #9b59b6; }
-          .security-schemes { margin: 1em 0; padding: 0.5em; background: #f0f8f0; }
-          a { text-decoration: none; }
-        </style>
         <div class="api-wrapper" role="document">
           <header class="api-header" role="banner">
             <h1 class="api-title"><a href="#top">#{@title}</a></h1>
