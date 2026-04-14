@@ -300,6 +300,11 @@ pre,
   color: var(--color-gray-800);
 }
 
+.schema-error {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
 /* ============================================
    Tags & Operations
    ============================================ */

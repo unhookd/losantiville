@@ -118,6 +118,8 @@ module Losantiville
 
         raw_definition_related_requests += %q{</ul></div>}
       }
+
+      # Render webhooks if present (OpenAPI 3.1)
       if @spec.webhooks_by_tag && !@spec.webhooks_by_tag.empty?
         raw_definition_related_requests += render_webhooks
       end

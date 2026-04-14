@@ -300,6 +300,11 @@ pre,
   color: var(--color-gray-800);
 }
 
+.schema-error {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
 /* ============================================
    Tags & Operations
    ============================================ */
@@ -358,6 +363,7 @@ pre,
   font-size: 0.75rem;
   text-transform: uppercase;
   padding: 0.2em 0.5em;
+  border: 1px solid transparent;
   border-radius: var(--radius-sm);
   color: #ffffff;
 }
