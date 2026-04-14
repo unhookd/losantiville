@@ -281,8 +281,7 @@ code, tt {
   font-size: 0.85em;
   background-color: var(--color-surface-alt);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 0.15em 0.35em;
+  padding: 0.2em 0.4em;
   color: var(--color-gray-700);
 }
 
@@ -292,12 +291,15 @@ pre,
   font-size: 0.8rem;
   background-color: var(--color-gray-100);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-md);
+  border-left: 3px solid var(--color-primary);
+  padding: var(--space-md) var(--space-lg);
   width: 80%;
   overflow-x: auto;
-  line-height: 1.5;
+  line-height: 1.7;
   color: var(--color-gray-800);
+  tab-size: 4;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .schema-error {
@@ -618,23 +620,3 @@ pre,
   outline-offset: 2px;
 }
 
-/* ============================================
-   Scrollbar Styling (Dark Theme)
-   ============================================ */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-surface);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-gray-400);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gray-500);
-}

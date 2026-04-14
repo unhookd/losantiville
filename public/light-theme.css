@@ -281,8 +281,7 @@ code, tt {
   font-size: 0.85em;
   background-color: var(--color-gray-100);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 0.15em 0.35em;
+  padding: 0.2em 0.4em;
   color: var(--color-gray-700);
 }
 
@@ -290,14 +289,17 @@ pre,
 .schema-preview {
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-gray-50);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-md);
+  border-left: 3px solid var(--color-primary);
+  padding: var(--space-md) var(--space-lg);
   width: 80%;
   overflow-x: auto;
-  line-height: 1.5;
+  line-height: 1.7;
   color: var(--color-gray-800);
+  tab-size: 4;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .schema-error {
