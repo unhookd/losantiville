@@ -12,6 +12,18 @@ describe "ARIA attributes and semantic CSS classNames" do
       expect(html).to include('<meta charset="UTF-8"/>')
     end
 
+    it "has a theme stylesheet link in head" do
+      expect(html).to match(/<link[^>]*id="theme-stylesheet"/)
+    end
+
+    it "has theme stylesheet link with rel stylesheet" do
+      expect(html).to match(/<link[^>]*rel="stylesheet"/)
+    end
+
+    it "has theme stylesheet defaulting to light-theme.css" do
+      expect(html).to match(/<link[^>]*href="light-theme.css"/)
+    end
+
     it "has a header element with role banner" do
       expect(html).to match(/<header[^>]*role="banner"/)
     end
@@ -22,6 +34,42 @@ describe "ARIA attributes and semantic CSS classNames" do
 
     it "has an h1 with api-title class" do
       expect(html).to match(/<h1[^>]*class="api-title"/)
+    end
+
+    it "has a theme toggle button" do
+      expect(html).to match(/<button[^>]*class="theme-toggle"/)
+    end
+
+    it "has theme toggle with role switch" do
+      expect(html).to match(/<button[^>]*role="switch"/)
+    end
+
+    it "has theme toggle with aria-checked" do
+      expect(html).to match(/<button[^>]*aria-checked="false"/)
+    end
+
+    it "has theme toggle with aria-label" do
+      expect(html).to match(/<button[^>]*aria-label="Toggle dark theme"/)
+    end
+
+    it "has theme toggle with inline onclick handler" do
+      expect(html).to match(/<button[^>]*onclick="/)
+    end
+
+    it "has onclick handler that references theme-stylesheet element" do
+      expect(html).to include("getElementById('theme-stylesheet')")
+    end
+
+    it "has onclick handler that toggles to dark-theme.css" do
+      expect(html).to include("dark-theme.css")
+    end
+
+    it "has onclick handler that toggles to light-theme.css" do
+      expect(html).to include("light-theme.css")
+    end
+
+    it "has onclick handler that updates aria-checked" do
+      expect(html).to include("aria-checked")
     end
 
     it "has a nav element with role navigation" do

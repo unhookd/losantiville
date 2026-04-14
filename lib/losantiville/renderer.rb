@@ -159,8 +159,9 @@ module Losantiville
           html { font-family: sans-serif; font-size: smaller; }
           html, body, #outside-container, #dashboard-container, .api-wrapper { height: 100%; margin: 0; padding: 0; flex: 1; display: flex; flex-flow: column; overflow: hidden; }
           .api-main-content { display: flex; flex: 1; overflow: hidden; }
-          .api-header { background: #e0e0e0; }
+          .api-header { background: #e0e0e0; display: flex; align-items: center; justify-content: space-between; }
           .api-header h1 { margin: 0.15em }
+          .theme-toggle { cursor: pointer; border: 1px solid #999; border-radius: 3px; padding: 0.25em 0.75em; font-size: 0.8em; background: #fff; margin-right: 0.5em; }
           .api-navigation { overflow: auto; height: 100%; width: 30%; }
           .api-navigation > div { padding: 0.5em; }
           .api-navigation ul { list-style: none; padding: 0; }
@@ -192,6 +193,7 @@ module Losantiville
         <div class="api-wrapper" role="document">
           <header class="api-header" role="banner">
             <h1 class="api-title"><a href="#top">#{@title}</a></h1>
+            <button class="theme-toggle" role="switch" aria-checked="false" aria-label="Toggle dark theme" onclick="(function(btn){var link=document.getElementById('theme-stylesheet');var isDark=link.getAttribute('href')==='dark-theme.css';link.setAttribute('href',isDark?'light-theme.css':'dark-theme.css');btn.setAttribute('aria-checked',String(!isDark));btn.textContent=isDark?'\\u263E Dark':'\\u2600 Light';})(this)">&#x263E; Dark</button>
           </header>
           <div class="api-main-content">
             <nav class="api-navigation" role="navigation" aria-label="API navigation">
@@ -211,7 +213,7 @@ module Losantiville
         </div>
       }
 
-      "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"/></head><body>#{raw_body}</body></html>"
+      "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"/><link id=\"theme-stylesheet\" rel=\"stylesheet\" href=\"light-theme.css\"/></head><body>#{raw_body}</body></html>"
     end
 
     def describe_schema(key, db, seen = nil)
