@@ -1,0 +1,613 @@
+/*
+ * Losantiville Light Theme
+ * Modern corporate color palette for API documentation
+ */
+
+/* ============================================
+   CSS Custom Properties (Design Tokens)
+   ============================================ */
+:root {
+  /* Primary brand colors */
+  --color-primary: #1a56db;
+  --color-primary-light: #3b82f6;
+  --color-primary-dark: #1e40af;
+
+  /* Neutral tones */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+
+  /* Semantic status colors */
+  --color-success: #16a34a;
+  --color-warning: #ca8a04;
+  --color-danger: #dc2626;
+  --color-info: #2563eb;
+
+  /* HTTP method colors */
+  --color-http-get: #16a34a;
+  --color-http-post: #ca8a04;
+  --color-http-put: #ea580c;
+  --color-http-patch: #7c3aed;
+  --color-http-delete: #dc2626;
+
+  /* Surface colors */
+  --color-surface: #ffffff;
+  --color-surface-alt: #f8fafc;
+  --color-surface-elevated: #ffffff;
+
+  /* Text colors */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+
+  /* Border colors */
+  --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
+
+  /* Typography */
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  /* Border radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+html {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================
+   Layout Structure
+   ============================================ */
+html, body, #outside-container, #dashboard-container,
+.api-wrapper {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+  overflow: hidden;
+}
+
+.api-main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ============================================
+   Header / Banner
+   ============================================ */
+.api-header {
+  background: var(--color-gray-800);
+  border-bottom: 3px solid var(--color-primary);
+  padding: 0;
+}
+
+.api-header .api-title {
+  margin: 0;
+  padding: var(--space-sm) var(--space-md);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.api-header .api-title a {
+  color: #ffffff;
+}
+
+.api-header .api-title a:hover {
+  color: var(--color-gray-200);
+}
+
+/* ============================================
+   Navigation Sidebar
+   ============================================ */
+.api-navigation {
+  overflow: auto;
+  height: 100%;
+  width: 30%;
+  min-width: 240px;
+  max-width: 360px;
+  background: var(--color-surface-alt);
+  border-right: 1px solid var(--color-border);
+}
+
+.api-navigation .nav-content {
+  padding: var(--space-md);
+}
+
+.api-navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.api-navigation ul.sections {
+  margin: 0 0 var(--space-lg) 0;
+}
+
+.api-navigation ul.sections li {
+  margin-bottom: var(--space-xs);
+}
+
+.api-navigation ul.sections li h3 {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.api-navigation ul.sections li h3 a {
+  color: var(--color-text-secondary);
+  display: block;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.api-navigation ul.sections li h3 a:hover {
+  background: var(--color-gray-200);
+  color: var(--color-text-primary);
+}
+
+.api-navigation ul.groups {
+  margin: 0 0 var(--space-md) var(--space-sm);
+}
+
+.api-navigation ul.groups li {
+  margin: 0 0 var(--space-xs);
+}
+
+.tag-group-heading {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin: var(--space-lg) 0 var(--space-sm) 0;
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tag-heading {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: var(--space-sm) 0 var(--space-xs) 0;
+  color: var(--color-text-primary);
+}
+
+.nav-operation-link {
+  display: block;
+  font-size: 0.8rem;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  transition: background-color 0.15s ease;
+}
+
+.nav-operation-link:hover {
+  background: var(--color-gray-200);
+  color: var(--color-text-primary);
+}
+
+/* HTTP method badges in navigation */
+.nav-operation-link.get::after,
+.nav-operation-link.post::after,
+.nav-operation-link.put::after,
+.nav-operation-link.patch::after,
+.nav-operation-link.delete::after {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-left: var(--space-sm);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.4em;
+  vertical-align: middle;
+}
+
+.nav-operation-link.get::after { content: "get"; color: var(--color-http-get); border: 1px solid var(--color-http-get); }
+.nav-operation-link.post::after { content: "post"; color: var(--color-http-post); border: 1px solid var(--color-http-post); }
+.nav-operation-link.put::after { content: "put"; color: var(--color-http-put); border: 1px solid var(--color-http-put); }
+.nav-operation-link.patch::after { content: "patch"; color: var(--color-http-patch); border: 1px solid var(--color-http-patch); }
+.nav-operation-link.delete::after { content: "delete"; color: var(--color-http-delete); border: 1px solid var(--color-http-delete); }
+
+/* ============================================
+   Main Documentation Area
+   ============================================ */
+.api-documentation {
+  overflow: auto;
+  height: 100%;
+  width: 70%;
+  padding: 0 var(--space-xl) var(--space-xl) var(--space-xl);
+  background: var(--color-surface);
+}
+
+.api-documentation h2 {
+  padding-top: var(--space-md);
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-sm);
+}
+
+/* ============================================
+   Code & Pre
+   ============================================ */
+code, tt {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.15em 0.35em;
+  color: var(--color-gray-700);
+}
+
+pre,
+.schema-preview {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  width: 80%;
+  overflow-x: auto;
+  line-height: 1.5;
+  color: var(--color-gray-800);
+}
+
+/* ============================================
+   Tags & Operations
+   ============================================ */
+.tag {
+  padding-top: var(--space-lg);
+  font-size: 1.1rem;
+  color: var(--color-text-primary);
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: var(--space-xs);
+}
+
+.tag-description {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.operations-list {
+  list-style: none;
+  padding: 0;
+}
+
+.operation-item {
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  transition: box-shadow 0.15s ease;
+}
+
+.operation-item:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.summary {
+  padding-top: var(--space-sm);
+  font-size: 0.95rem;
+}
+
+.summary a {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.deprecated a {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+.endpoint-path {
+  margin: var(--space-sm) 0;
+}
+
+.http-method {
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 0.2em 0.5em;
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+}
+
+.http-method--get { background-color: var(--color-http-get); border-color: var(--color-http-get); }
+.http-method--post { background-color: var(--color-http-post); border-color: var(--color-http-post); }
+.http-method--put { background-color: var(--color-http-put); border-color: var(--color-http-put); }
+.http-method--patch { background-color: var(--color-http-patch); border-color: var(--color-http-patch); }
+.http-method--delete { background-color: var(--color-http-delete); border-color: var(--color-http-delete); }
+
+.endpoint-url {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+/* ============================================
+   Response Tabs
+   ============================================ */
+.response-tabs {
+  margin-top: var(--space-sm);
+}
+
+.response-tabs .response-panel:not(:target) {
+  display: none;
+}
+
+.response-tabs .response-panel:target {
+  padding-top: 4.5em;
+  margin-top: -4.5em;
+  display: block;
+}
+
+.response-code {
+  display: inline-block;
+  margin-right: var(--space-xs);
+  padding: 0.2em 0.6em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  background-color: var(--color-gray-200);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease;
+}
+
+.response-code:hover {
+  background-color: var(--color-primary-light);
+  color: #ffffff;
+}
+
+/* ============================================
+   Servers Section
+   ============================================ */
+.servers {
+  margin: 0 0 var(--space-lg) 0;
+  padding: var(--space-md);
+  background: var(--color-gray-50);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.servers-heading {
+  margin: 0 0 var(--space-sm) 0;
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+}
+
+.servers-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.server-item {
+  margin-bottom: var(--space-xs);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.server-url {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+/* ============================================
+   Request Body
+   ============================================ */
+.request-body {
+  margin: var(--space-sm) 0;
+  padding: var(--space-md);
+  background: var(--color-gray-50);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.request-body-heading {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.request-body-description {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  margin: var(--space-xs) 0;
+}
+
+.request-body-required em {
+  color: var(--color-danger);
+  font-size: 0.8rem;
+}
+
+.media-type {
+  margin: var(--space-xs) 0;
+}
+
+.media-type-label {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================
+   Webhooks
+   ============================================ */
+.webhook-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-left: var(--space-sm);
+  border: 1px solid #7c3aed;
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.4em;
+  color: #7c3aed;
+  vertical-align: middle;
+}
+
+.webhooks-list {
+  list-style: none;
+  padding: 0;
+}
+
+.webhook-item {
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  border-left: 3px solid #7c3aed;
+  background: var(--color-surface);
+}
+
+/* ============================================
+   Security Schemes
+   ============================================ */
+.security-schemes {
+  margin: var(--space-lg) 0;
+  padding: var(--space-md);
+  background: var(--color-gray-50);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.security-schemes-heading {
+  margin: 0 0 var(--space-sm) 0;
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+}
+
+.security-schemes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.security-scheme-item {
+  margin-bottom: var(--space-xs);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.scheme-name {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.scheme-type {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* ============================================
+   Application Upload Form
+   ============================================ */
+.app-container {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+
+.dashboard-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-form-container {
+  text-align: center;
+}
+
+.specification-upload-form {
+  display: inline-flex;
+  gap: var(--space-md);
+  align-items: center;
+  padding: var(--space-xl);
+  background: var(--color-surface-alt);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.file-input {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+}
+
+.submit-button {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+.submit-button:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.submit-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

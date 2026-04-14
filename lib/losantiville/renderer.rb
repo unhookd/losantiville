@@ -54,9 +54,9 @@ module Losantiville
         description = nil
       end
 
-      section_nav = %q{<ul class="sections">}
+      section_nav = %q{<ul class="sections" role="list" aria-label="Document sections">}
       @sections.each { |section, href|
-        section_nav += %Q{<li><h3><a href="#{href}">#{section}</a></h3></li>}
+        section_nav += %Q{<li role="listitem"><h3><a href="#{href}">#{section}</a></h3></li>}
       }
       section_nav += %q{</ul>}
 
@@ -72,20 +72,21 @@ module Losantiville
           <h3 class="tag" id="tag-#{rk_tag.gsub(" ", "-")}">
             <a href="#tag-#{rk_tag.gsub(" ", "-")}">#{rk_tag}</a>
           </h3>
-          <p>#{@tags_by_name[rk_tag] ? CommonMarker.render_html(@tags_by_name[rk_tag]) : 'no-tag'}</p>
+          <p class="tag-description">#{@tags_by_name[rk_tag] ? CommonMarker.render_html(@tags_by_name[rk_tag]) : 'no-tag'}</p>
         }
 
-        raw_definition_related_requests += %q{<div><ul>}
+        raw_definition_related_requests += %q{<div class="operations-group"><ul class="operations-list" role="list" aria-label="API operations">}
         related_requests.each { |related_method, related_request, related_path|
           deprecated_class = related_request["deprecated"] ? " deprecated" : ""
+          deprecated_aria = related_request["deprecated"] ? ' aria-label="Deprecated endpoint"' : ""
           raw_definition_related_requests += %Q{
-            <li>
+            <li class="operation-item" role="listitem"#{deprecated_aria}>
               <h5 class="summary#{deprecated_class}" id="summary-#{rk_tag}-#{related_method}-#{related_path}">
                 <a href="#summary-#{rk_tag}-#{related_method}-#{related_path}">#{related_request["summary"]}</a>
               </h5>
               #{related_request["description"] ? CommonMarker.render_html(related_request["description"], :DEFAULT) : ""}
-              <p>
-                <tt>#{related_method.upcase}</tt> <tt>#{related_path}</tt>
+              <p class="endpoint-path">
+                <tt class="http-method http-method--#{related_method}">#{related_method.upcase}</tt> <tt class="endpoint-url">#{related_path}</tt>
               </p>
           }
 
@@ -96,12 +97,12 @@ module Losantiville
 
           all_requests_paths_bits = %q{}
           all_requests_paths_tabs = %q{}
-          all_requests_paths_bits += %q{<div class="tabs">}
+          all_requests_paths_bits += %q{<div class="tabs response-tabs" role="tablist" aria-label="Response codes">}
 
           related_request["responses"].each { |code, response|
-            all_requests_paths_tabs += %Q{<a class="response-code" href="##{related_method}-#{related_path}-#{code}">#{code}</a>}
+            all_requests_paths_tabs += %Q{<a class="response-code" role="tab" aria-controls="#{related_method}-#{related_path}-#{code}" href="##{related_method}-#{related_path}-#{code}">#{code}</a>}
 
-            all_requests_paths_bits += %Q{<div id="#{related_method}-#{related_path}-#{code}"><pre>}
+            all_requests_paths_bits += %Q{<div class="response-panel" role="tabpanel" id="#{related_method}-#{related_path}-#{code}"><pre class="schema-preview" aria-label="Response schema for #{code}">}
             if schema = response["schema"]
               all_requests_paths_bits += JSON.pretty_generate(describe_schema("schema", schema))
             end
@@ -117,8 +118,6 @@ module Losantiville
 
         raw_definition_related_requests += %q{</ul></div>}
       }
-
-      # Render webhooks if present (OpenAPI 3.1)
       if @spec.webhooks_by_tag && !@spec.webhooks_by_tag.empty?
         raw_definition_related_requests += render_webhooks
       end
@@ -134,44 +133,44 @@ module Losantiville
         group = group_item["name"]
         tags = group_item["tags"]
 
-        raw_sections += %Q{<h4 id="group-#{group.gsub(" ", "-")}"><a href="#group-#{group.gsub(" ", "-")}">#{group}</a></h4>}
+        raw_sections += %Q{<h4 class="tag-group-heading" id="group-#{group.gsub(" ", "-")}"><a href="#group-#{group.gsub(" ", "-")}">#{group}</a></h4>}
 
         tags.each { |api_tag|
           raw_request_summaries = []
 
           if requests_by_tag = @requests_by_tag[api_tag]
-            raw_sections += %Q{<h5><a href="#tag-#{api_tag.gsub(" ", "-")}">#{api_tag}</a></h5>}
+            raw_sections += %Q{<h5 class="tag-heading"><a href="#tag-#{api_tag.gsub(" ", "-")}">#{api_tag}</a></h5>}
 
             requests_by_tag.each { |method, request, path|
-              raw_request_summaries << "<li>" +
-              %Q{<a class="#{method}" href="#summary-#{request["tags"].first}-#{method}-#{path}">#{request["summary"]}</a>} +
+              raw_request_summaries << %Q{<li class="nav-operation-item" role="listitem">} +
+              %Q{<a class="nav-operation-link #{method}" href="#summary-#{request["tags"].first}-#{method}-#{path}">#{request["summary"]}</a>} +
               %q{</li>}
             }
           end
 
-          raw_sections += %q{<ul class="groups">} + raw_request_summaries.join + "</ul>"
+          raw_sections += %q{<ul class="groups" role="list" aria-label="Operations">} + raw_request_summaries.join + "</ul>"
         }
       }
 
       raw_body = %Q{
         <style>
           html { font-family: sans-serif; font-size: smaller; }
-          html, body, #outside-container, #dashboard-container, #wrapper { height: 100%; margin: 0; padding: 0; flex: 1; display: flex; flex-flow: column; overflow: hidden; }
-          #main { display: flex; flex: 1; overflow: hidden; }
-          #header { background: #e0e0e0; }
-          #header h1 { margin: 0.15em }
-          #navigation { overflow: auto; height: 100%; width: 30%; }
-          #navigation > div { padding: 0.5em; }
-          #navigation ul { list-style: none; padding: 0; }
-          #navigation ul.groups { margin: 0 0 1em 0.5em; }
-          #navigation ul.groups li { margin: 0 0 0.5em; }
-          #navigation ul.sections { margin: -1em 0 1em 0em; }
-          #documentation { overflow: auto; height: 100%; width: 70%; padding: 0 1em 1em 1em; }
-          #documentation h2 { padding: 0.5em 0 0 0; }
+          html, body, #outside-container, #dashboard-container, .api-wrapper { height: 100%; margin: 0; padding: 0; flex: 1; display: flex; flex-flow: column; overflow: hidden; }
+          .api-main-content { display: flex; flex: 1; overflow: hidden; }
+          .api-header { background: #e0e0e0; }
+          .api-header h1 { margin: 0.15em }
+          .api-navigation { overflow: auto; height: 100%; width: 30%; }
+          .api-navigation > div { padding: 0.5em; }
+          .api-navigation ul { list-style: none; padding: 0; }
+          .api-navigation ul.groups { margin: 0 0 1em 0.5em; }
+          .api-navigation ul.groups li { margin: 0 0 0.5em; }
+          .api-navigation ul.sections { margin: -1em 0 1em 0em; }
+          .api-documentation { overflow: auto; height: 100%; width: 70%; padding: 0 1em 1em 1em; }
+          .api-documentation h2 { padding: 0.5em 0 0 0; }
           code, tt { font-family: monospace; background-color: #c0c0c0; padding: 0.2em 0.33em 0.2em 0.33em; }
           pre { font-family: monospace; background-color: #c0c0c0; padding: 0.5em; width: 80%; overflow-x: auto; }
-          .tabs div:not(:target) { display: none; }
-          .tabs div:target { padding-top: 4.5em; margin-top: -4.5em; display: block; }
+          .response-tabs .response-panel:not(:target) { display: none; }
+          .response-tabs .response-panel:target { padding-top: 4.5em; margin-top: -4.5em; display: block; }
           .response-code { margin-right: 0.5em; padding: 0.25em; background-color: yellow; }
           .tag { padding-top: 1em; }
           .summary { padding-top: 1em; }
@@ -188,29 +187,29 @@ module Losantiville
           .security-schemes { margin: 1em 0; padding: 0.5em; background: #f0f8f0; }
           a { text-decoration: none; }
         </style>
-        <div id="wrapper">
-          <div id="header">
-            <h1><a href="#top">#{@title}</a></h1>
-          </div>
-          <div id="main">
-            <div id="navigation">
-              <div>
+        <div class="api-wrapper" role="document">
+          <header class="api-header" role="banner">
+            <h1 class="api-title"><a href="#top">#{@title}</a></h1>
+          </header>
+          <div class="api-main-content">
+            <nav class="api-navigation" role="navigation" aria-label="API navigation">
+              <div class="nav-content">
                 #{section_nav}
                 #{raw_sections}
               </div>
-            </div>
-            <div id="documentation">
+            </nav>
+            <main class="api-documentation" role="main" aria-label="API documentation">
               <a id="top"/>
-              <div>
+              <div class="documentation-content">
                 #{description ? MyMarkdownRenderer.new.render(description) : "TODO"}
                 #{raw_definition_related_requests}
               </div>
-            </div>
+            </main>
           </div>
         </div>
       }
 
-      "<!DOCTYPE html><html lang=\"en\"><body>#{raw_body}</body></html>"
+      "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"/></head><body>#{raw_body}</body></html>"
     end
 
     def describe_schema(key, db, seen = nil)
@@ -332,10 +331,10 @@ module Losantiville
     private
 
     def render_servers
-      html = %q{<div class="servers"><h4>Servers</h4><ul>}
+      html = %q{<div class="servers" role="region" aria-label="Server information"><h4 class="servers-heading">Servers</h4><ul class="servers-list" role="list">}
       @spec.servers.each do |server|
         desc = server["description"] ? " - #{server["description"]}" : ""
-        html += %Q{<li><tt>#{server["url"]}</tt>#{desc}</li>}
+        html += %Q{<li class="server-item" role="listitem"><tt class="server-url">#{server["url"]}</tt>#{desc}</li>}
       end
       html += %q{</ul></div>}
       html
@@ -343,25 +342,25 @@ module Losantiville
 
     def render_request_body(request_body)
       return "" unless request_body
-      html = %q{<div class="request-body"><h6>Request Body</h6>}
+      html = %q{<div class="request-body" role="region" aria-label="Request body"><h6 class="request-body-heading">Request Body</h6>}
 
       if request_body["description"]
-        html += %Q{<p>#{request_body["description"]}</p>}
+        html += %Q{<p class="request-body-description">#{request_body["description"]}</p>}
       end
 
       if request_body["required"]
-        html += %q{<p><em>Required</em></p>}
+        html += %q{<p class="request-body-required"><em>Required</em></p>}
       end
 
       content = request_body["content"]
       if content.is_a?(Hash)
         content.each do |media_type, media_obj|
-          html += %Q{<p><tt>#{media_type}</tt></p>}
+          html += %Q{<p class="media-type"><tt class="media-type-label">#{media_type}</tt></p>}
           if media_obj.is_a?(Hash) && media_obj["schema"]
             begin
-              html += "<pre>" + JSON.pretty_generate(describe_schema("schema", media_obj["schema"])) + "</pre>"
+              html += %Q{<pre class="schema-preview" aria-label="Request body schema">} + JSON.pretty_generate(describe_schema("schema", media_obj["schema"])) + "</pre>"
             rescue => e
-              html += "<pre>#{e.message}</pre>"
+              html += %Q{<pre class="schema-preview schema-error">#{e.message}</pre>}
             end
           end
         end
@@ -374,28 +373,28 @@ module Losantiville
     def render_webhooks
       html = %Q{<h3 class="tag" id="tag-webhooks"><a href="#tag-webhooks">Webhooks</a></h3>}
       @spec.webhooks_by_tag.each do |tag, webhook_ops|
-        html += %q{<div><ul>}
+        html += %q{<div class="webhooks-group"><ul class="webhooks-list" role="list" aria-label="Webhook operations">}
         webhook_ops.each do |method, operation, name|
           html += %Q{
-            <li>
+            <li class="webhook-item" role="listitem">
               <h5 class="summary" id="webhook-#{name}-#{method}">
                 <a href="#webhook-#{name}-#{method}">#{operation["summary"] || name}</a>
-                <span class="webhook-badge">webhook</span>
+                <span class="webhook-badge" aria-label="Webhook">webhook</span>
               </h5>
               #{operation["description"] ? CommonMarker.render_html(operation["description"], :DEFAULT) : ""}
-              <p>
-                <tt>#{method.upcase}</tt> <tt>#{name}</tt>
+              <p class="endpoint-path">
+                <tt class="http-method http-method--#{method}">#{method.upcase}</tt> <tt class="endpoint-url">#{name}</tt>
               </p>
           }
 
           # Render responses
           if operation["responses"]
-            html += %q{<div class="tabs">}
+            html += %q{<div class="tabs response-tabs" role="tablist" aria-label="Response codes">}
             operation["responses"].each do |code, response|
-              html += %Q{<a class="response-code" href="#webhook-#{name}-#{method}-#{code}">#{code}</a>}
+              html += %Q{<a class="response-code" role="tab" aria-controls="webhook-#{name}-#{method}-#{code}" href="#webhook-#{name}-#{method}-#{code}">#{code}</a>}
             end
             operation["responses"].each do |code, response|
-              html += %Q{<div id="webhook-#{name}-#{method}-#{code}"><pre>}
+              html += %Q{<div class="response-panel" role="tabpanel" id="webhook-#{name}-#{method}-#{code}"><pre class="schema-preview" aria-label="Response schema for #{code}">}
               if response["schema"]
                 begin
                   html += JSON.pretty_generate(describe_schema("schema", response["schema"]))
@@ -416,12 +415,12 @@ module Losantiville
     end
 
     def render_security_schemes
-      html = %q{<div class="security-schemes"><h4>Security Schemes</h4><ul>}
+      html = %q{<div class="security-schemes" role="region" aria-label="Security schemes"><h4 class="security-schemes-heading">Security Schemes</h4><ul class="security-schemes-list" role="list">}
       @spec.security_schemes.each do |name, scheme|
         next unless scheme.is_a?(Hash)
         scheme_type = scheme["type"] || "unknown"
         desc = scheme["description"] ? " - #{scheme["description"]}" : ""
-        html += %Q{<li><strong>#{name}</strong> (#{scheme_type})#{desc}</li>}
+        html += %Q{<li class="security-scheme-item" role="listitem"><strong class="scheme-name">#{name}</strong> (<span class="scheme-type">#{scheme_type}</span>)#{desc}</li>}
       end
       html += %q{</ul></div>}
       html
