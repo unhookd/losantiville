@@ -30,10 +30,10 @@ module Losantiville
       mabb = Markaby::Builder.new
 
       dashboard_partial_proc = Proc.new { |mab|
-        mab.div do
-          mab.form("id" => "form") do
-            mab.input("type" => "file", "id" => "specification", "name" => "specification", "tabindex" => 0)
-            mab.input("type" => "submit", "id" => "submit", "tabindex" => 1)
+        mab.div("class" => "upload-form-container") do
+          mab.form("id" => "form", "class" => "specification-upload-form", "role" => "form", "aria-label" => "Upload API specification") do
+            mab.input("type" => "file", "id" => "specification", "name" => "specification", "tabindex" => 0, "class" => "file-input", "aria-label" => "Choose specification file")
+            mab.input("type" => "submit", "id" => "submit", "tabindex" => 1, "class" => "submit-button", "aria-label" => "Upload specification")
           end
         end
       }
@@ -46,8 +46,8 @@ module Losantiville
         end
 
         mabb.body do
-          mabb.div("id" => "outside-container") do
-            mabb.div("id" => "dashboard-container", &dashboard_partial_proc)
+          mabb.div("id" => "outside-container", "class" => "app-container", "role" => "application", "aria-label" => "Losantiville API Documentation Generator") do
+            mabb.div("id" => "dashboard-container", "class" => "dashboard-container", &dashboard_partial_proc)
           end
         end
       end
